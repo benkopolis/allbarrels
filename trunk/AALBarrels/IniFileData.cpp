@@ -5,6 +5,8 @@
  *      Author: zby
  */
 
+#include <cstring>
+
 #include "IniFileData.h"
 
 namespace AALBarrels
@@ -12,16 +14,32 @@ namespace AALBarrels
 
 IniFileData::IniFileData()
 {
-	// TODO Auto-generated constructor stub
+	this->initVariables();
+	this->_iniFileName = NULL;
+}
 
+IniFileData::IniFileData(char *fileName)
+{
+	this->initVariables();
+	this->_iniFileName = new char [strlen(fileName)];
+	strcpy(this->_iniFileName, fileName);
 }
 
 IniFileData::~IniFileData()
 {
-	// TODO Auto-generated destructor stub
+	delete this->_iniFileName;
+	delete [] this->_LoadFromFile;
+	delete [] this->_SavToFile;
 }
 
 
+
+
+/**
+ * -----------------------------------------------------------------------------------------
+ * 								CLASS GETTERS AND SETTERS
+ * -----------------------------------------------------------------------------------------
+ */
 char* IniFileData::getIniFileName() const
 {
     return _iniFileName;
@@ -37,9 +55,9 @@ int IniFileData::getHowMany() const
     return _HowMany;
 }
 
-char IniFileData::getChangeWay() const
+char* IniFileData::getChangeWay() const
 {
-    return _ChangeWay;
+    return (char*)_ChangeWay;
 }
 
 int IniFileData::getChangeVal() const
@@ -67,7 +85,7 @@ bool IniFileData::getLoad() const
     return _Load;
 }
 
-char IniFileData::*getLoadFromFile() const
+char* IniFileData::getLoadFromFile() const
 {
     return _LoadFromFile;
 }
@@ -110,7 +128,7 @@ void IniFileData::setChangeVal(int _ChangeVal)
 
 void IniFileData::setChangeWay(char _ChangeWay[4])
 {
-    this->_ChangeWay = _ChangeWay;
+    strcpy(this->_ChangeWay, _ChangeWay);
 }
 
 void IniFileData::setIterCount(int _IterCount)
@@ -156,6 +174,25 @@ void IniFileData::setShowWork(bool _ShowWork)
 void IniFileData::setCheckTimes(bool _CheckTimes)
 {
     this->_CheckTimes = _CheckTimes;
+}
+
+
+
+void IniFileData::initVariables()
+{
+	this->_HowMany = 100;
+	this->_ChangeVal = 100;
+	strcpy(this->_ChangeWay, "add");
+	this->_Console = false;
+	this->_GenTable = true;
+	this->_IterCount = 10;
+	this->_Load = false;
+	this->_LoadFromFile = new char [30];
+	strcpy(this->_LoadFromFile, "dane.dat");
+	this->_Sav = false;
+	this->_SavToFile = new char [30];
+	strcpy(this->_SavToFile, "dane.dat");
+	this->_ShowWork = false;
 }
 
 
