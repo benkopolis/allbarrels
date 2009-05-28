@@ -35,7 +35,7 @@ public:
 
     int getHowMany() const;
 
-    char getChangeWay() const;
+    char* getChangeWay() const;
 
     int getChangeVal() const;
 
@@ -89,6 +89,13 @@ protected:
     void setCheckTimes(bool _CheckTimes);
 
 private:
+
+	void initVariables();
+
+
+	/**
+	 * CLASS VARIABLES
+	 */
 
 	char *_iniFileName;
 
