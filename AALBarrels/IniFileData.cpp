@@ -5,7 +5,7 @@
  *      Author: zby
  */
 
-#include <cstring>
+#include <iniparser.h>
 
 #include "IniFileData.h"
 
@@ -32,7 +32,30 @@ IniFileData::~IniFileData()
 	delete [] this->_SavToFile;
 }
 
+void IniFileData::loadData()
+{
+	dictionary *dict;
+	dict = iniparser_load(this->_iniFileName);
 
+	this->_HowMany = iniparser_getint(dict, "data:HowMany", this->_HowMany);
+	this->_ChangeVal = iniparser_getint(dict, "data:ChangeVal", this->_ChangeVal);
+	strcpy(this->_ChangeWay, iniparser_getstring(dict, "data:ChangeWay", this->_ChangeWay));
+
+//	this->_HowMany = 100;
+//		this->_ChangeVal
+//		strcpy(this->_ChangeWay, "add");
+//		this->_Console = false;
+//		this->_GenTable = true;
+//		this->_IterCount = 10;
+//		this->_Load = false;
+//		this->_LoadFromFile = new char [30];
+//		strcpy(this->_LoadFromFile, "dane.dat");
+//		this->_Sav = false;
+//		this->_SavToFile = new char [30];
+//		strcpy(this->_SavToFile, "dane.dat");
+//		this->_ShowWork = false;
+
+}
 
 
 /**
