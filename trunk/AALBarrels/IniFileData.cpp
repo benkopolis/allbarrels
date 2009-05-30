@@ -5,7 +5,7 @@
  *      Author: zby
  */
 
-#include <iniparser.h>
+#include "iniparser.h"
 
 #include "IniFileData.h"
 
@@ -32,28 +32,35 @@ IniFileData::~IniFileData()
 	delete [] this->_SavToFile;
 }
 
-void IniFileData::loadData()
+void IniFileData::loadData(FILE *f)
 {
 	dictionary *dict;
-	dict = iniparser_load(this->_iniFileName);
-
+	dict = iniparser_load(f);
+	char *temp = NULL;
 	this->_HowMany = iniparser_getint(dict, "data:HowMany", this->_HowMany);
 	this->_ChangeVal = iniparser_getint(dict, "data:ChangeVal", this->_ChangeVal);
-	strcpy(this->_ChangeWay, iniparser_getstring(dict, "data:ChangeWay", this->_ChangeWay));
-
-//	this->_HowMany = 100;
-//		this->_ChangeVal
-//		strcpy(this->_ChangeWay, "add");
-//		this->_Console = false;
-//		this->_GenTable = true;
-//		this->_IterCount = 10;
-//		this->_Load = false;
-//		this->_LoadFromFile = new char [30];
-//		strcpy(this->_LoadFromFile, "dane.dat");
-//		this->_Sav = false;
-//		this->_SavToFile = new char [30];
-//		strcpy(this->_SavToFile, "dane.dat");
-//		this->_ShowWork = false;
+	strncpy(this->_ChangeWay, iniparser_getstring(dict, "data:ChangeWay", this->_ChangeWay), 3);
+	this->_CheckTimes = iniparser_getboolean(dict, "other:CheckTimes", this->_CheckTimes);
+	this->_Console = iniparser_getboolean(dict, "io:Console", this->_Console);
+	this->_GenTable = iniparser_getboolean(dict, "other:GenTable", this->_GenTable);
+	this->_Load = iniparser_getboolean(dict, "io:Load", this->_Load);
+	this->_IterCount = iniparser_getint(dict, "data:IterCount", this->_IterCount);
+	temp = iniparser_getstring(dict, "io:LoadFromFile", this->_LoadFromFile);
+	if(strcmp(this->_LoadFromFile, temp) < 0 || strcmp(this->_LoadFromFile, temp) > 0 )
+	{
+		delete [] this->_LoadFromFile;
+		this->_LoadFromFile = new char [strlen(temp)+1];
+		strcpy(this->_LoadFromFile, temp);
+	}
+	this->_Sav = iniparser_getboolean(dict, "io:Sav", this->_Sav);
+	temp = iniparser_getstring(dict, "io:SavToFile", this->_SavToFile);
+	if(strcmp(this->_SavToFile, temp) < 0 || strcmp(this->_SavToFile, temp) > 0 )
+	{
+		delete [] this->_SavToFile;
+		this->_SavToFile = new char [strlen(temp)+1];
+		strcpy(this->_SavToFile, temp);
+	}
+	this->_ShowWork = iniparser_getboolean(dict, "other:ShowWork", this->_ShowWork);
 
 }
 
@@ -200,11 +207,14 @@ void IniFileData::setCheckTimes(bool _CheckTimes)
 }
 
 
-
+/**
+ * Metoda inicjująca pola klasy wartościami domyślnymi opisanymi w dokumentacji
+ */
 void IniFileData::initVariables()
 {
 	this->_HowMany = 100;
 	this->_ChangeVal = 100;
+	this->_CheckTimes = true;
 	strcpy(this->_ChangeWay, "add");
 	this->_Console = false;
 	this->_GenTable = true;

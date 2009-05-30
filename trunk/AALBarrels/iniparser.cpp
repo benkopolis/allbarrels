@@ -82,9 +82,9 @@ static char * strstrip(char * s)
 {
     static char l[ASCIILINESZ+1];
 	char * last ;
-	
+
     if (s==NULL) return NULL ;
-    
+
 	while (isspace((int)*s) && *s) s++;
 	memset(l, 0, ASCIILINESZ+1);
 	strcpy(l, s);
@@ -457,7 +457,7 @@ static line_status iniparser_line(
     char * section,
     char * key,
     char * value)
-{   
+{
     line_status sta ;
     char        line[ASCIILINESZ+1];
     int         len ;
@@ -471,7 +471,7 @@ static line_status iniparser_line(
         sta = LINE_EMPTY ;
     } else if (line[0]=='#') {
         /* Comment line */
-        sta = LINE_COMMENT ; 
+        sta = LINE_COMMENT ;
     } else if (line[0]=='[' && line[len-1]==']') {
         /* Section name */
         sscanf(line, "[%[^]]", section);
@@ -526,7 +526,7 @@ static line_status iniparser_line(
   The returned dictionary must be freed using iniparser_freedict().
  */
 /*--------------------------------------------------------------------------*/
-dictionary * iniparser_load(const char * ininame)
+dictionary * iniparser_load(FILE *f)
 {
     FILE * in ;
 
@@ -542,15 +542,15 @@ dictionary * iniparser_load(const char * ininame)
     int  errs=0;
 
     dictionary * dict ;
-
-    if ((in=fopen(ininame, "r"))==NULL) {
-        fprintf(stderr, "iniparser: cannot open %s\n", ininame);
+    in=f;//fopen(ininame, "r");
+    if (in==NULL) {
+        fprintf(stderr, "iniparser: cannot open %s\n", "nazwa pliku z main");
         return NULL ;
     }
 
     dict = dictionary_new(0) ;
     if (!dict) {
-        fclose(in);
+       // fclose(in);
         return NULL ;
     }
 
@@ -567,10 +567,10 @@ dictionary * iniparser_load(const char * ininame)
         if (line[len]!='\n') {
             fprintf(stderr,
                     "iniparser: input line too long in %s (%d)\n",
-                    ininame,
+                    "nazwa pliku z main",
                     lineno);
             dictionary_del(dict);
-            fclose(in);
+         //   fclose(in);
             return NULL ;
         }
         /* Get rid of \n and spaces at end of line */
@@ -603,7 +603,7 @@ dictionary * iniparser_load(const char * ininame)
 
             case LINE_ERROR:
             fprintf(stderr, "iniparser: syntax error in %s (%d):\n",
-                    ininame,
+                    "nazwa pliku z main",
                     lineno);
             fprintf(stderr, "-> %s\n", line);
             errs++ ;
@@ -623,7 +623,7 @@ dictionary * iniparser_load(const char * ininame)
         dictionary_del(dict);
         dict = NULL ;
     }
-    fclose(in);
+   // fclose(in);
     return dict ;
 }
 

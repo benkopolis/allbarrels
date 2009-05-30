@@ -21,7 +21,7 @@ public:
 	/**
 	 * Metoda pobiera dane z pliku i zapisuje w zmiennych prywatnych klasy.
 	 */
-	void loadData();
+	void loadData(FILE *f);
 
 	/**
 	 * -------------------------------------------------------------------------------------

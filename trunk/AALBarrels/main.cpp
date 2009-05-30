@@ -18,7 +18,7 @@
 
 #endif
 
-#include "iniparser.h"
+#include "IniFileData.h"
 #include "InclinedPlane.h"
 
 
@@ -71,10 +71,27 @@ double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int 
 
 int main(int argc, char **argv)
 {
-	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
-	std::cout << "koooooonieeec" << std::endl;
+	char *n = new char [strlen("/home/zby/worskpaceCiCpp/example.ini\0")];
+	strcpy(n, "/home/zby/worskpaceCiCpp/example.ini");
+	AALBarrels::IniFileData ifd(n);
 
+	FILE *i = fopen("/home/zby/workspaceCiCpp/AALBarrels/exapmle.ini", "r");
+
+
+	printf("I: %x \n", (int)i);
+	ifd.loadData(i);
+	fclose(i);
+
+
+//	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
+//	std::cout << "koooooonieeec" << std::endl;
+
+
+
+
+#ifdef WIN32
 	system("PAUSE");
+#endif
 
 	return 0;
 }
