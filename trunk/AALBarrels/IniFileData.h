@@ -8,6 +8,12 @@
 #ifndef INIFILEDATA_H_
 #define INIFILEDATA_H_
 
+#include <iostream>
+#include <fstream>
+
+
+using namespace std;
+
 namespace AALBarrels
 {
 
@@ -21,7 +27,7 @@ public:
 	/**
 	 * Metoda pobiera dane z pliku i zapisuje w zmiennych prywatnych klasy.
 	 */
-	void loadData(FILE *f);
+	bool loadData();
 
 	/**
 	 * -------------------------------------------------------------------------------------
@@ -87,6 +93,14 @@ protected:
     void setShowWork(bool _ShowWork);
 
     void setCheckTimes(bool _CheckTimes);
+
+    int getint(ifstream *f, int def);
+
+    bool getboolean(ifstream *f, bool def);
+
+    char* getstring(ifstream *f, const char* def);
+
+
 
 private:
 
