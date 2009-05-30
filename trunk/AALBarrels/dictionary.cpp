@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <unistd.h>
+#include <unistd.h>
 
 /** Maximum value size for integers and doubles. */
 #define MAXVALSZ	1024
@@ -69,7 +69,7 @@ static char * xstrdup(char * s)
     char * t ;
     if (!s)
         return NULL ;
-    t = malloc(strlen(s)+1) ;
+    t = new char [strlen(s)+1] ;
     if (t) {
         strcpy(t,s);
     }
