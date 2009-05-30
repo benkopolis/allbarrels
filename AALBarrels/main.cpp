@@ -75,12 +75,7 @@ int main(int argc, char **argv)
 	strcpy(n, "/home/zby/worskpaceCiCpp/example.ini");
 	AALBarrels::IniFileData ifd(n);
 
-	FILE *i = fopen("/home/zby/workspaceCiCpp/AALBarrels/exapmle.ini", "r");
-
-
-	printf("I: %x \n", (int)i);
-	ifd.loadData(i);
-	fclose(i);
+	ifd.loadData();
 
 
 //	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
