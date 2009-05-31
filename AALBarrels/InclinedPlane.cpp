@@ -93,6 +93,41 @@ void InclinedPlane::addBarrel(Barrel** b, int size)
 	}
 }
 
+
+void InclinedPlane::printBarrelsToStream(std::ostream &f) const
+{
+	Barrel* ii = this->list.start();
+	char c = '\0';
+	//for(; ii != list.end(); ++ii, ++i)
+	while(ii != list.end())
+	{
+		c = ii->printBarrel();
+		f << c;
+		ii = ii->next();
+	}
+	f << "\n";
+}
+
+
+void InclinedPlane::printBarrelsToStream(std::ostream &f, int index) const
+{
+	Barrel* ii = this->list.start();
+	int i = 0;
+	char c = '\0';
+	//for(; ii != list.end(); ++ii, ++i)
+	while(ii != list.end())
+	{
+		c = ii->printBarrel();
+		f << c;
+		if(i == index)
+			std::cout << "||";
+		ii = ii->next();
+		++i;
+	}
+	f << "\n";
+}
+
+
 /**
  * ********************************************************************************
  * ************************** CLASS PUBLIC METHOD *********************************
@@ -102,16 +137,7 @@ void InclinedPlane::addBarrel(Barrel** b, int size)
  */
 void InclinedPlane::printBarrels() const
 {
-	Barrel* ii = this->list.start();
-	char c = '\0';
-	//for(; ii != list.end(); ++ii, ++i)
-	while(ii != list.end())
-	{
-		c = ii->printBarrel();
-		std::cout << c;
-		ii = ii->next();
-	}
-	std::cout << std::endl;
+	this->printBarrelsToStream(std::cout);
 }
 
 /**
@@ -123,21 +149,7 @@ void InclinedPlane::printBarrels() const
  */
 void InclinedPlane::printBarrels(int index) const
 {
-	Barrel* ii = this->list.start();
-	char c = '\0';
-	int i = 0;
-	//for(; ii!=list.end(); ++ii, ++i)
-	while(ii != list.end())
-	{
-		c = ii->printBarrel();
-		if(i == index)
-			std::cout << "||";
-		std::cout << c;
-		if(i%25 == 0)
-			std::cout << std::endl;
-		++i;
-		ii = ii->next();
-	}
+	this->printBarrelsToStream(std::cout, index);
 }
 
 /**
@@ -212,6 +224,15 @@ Barrel** InclinedPlane::readLineOfBarrels(std::ifstream *f)
 	return ret;
 }
 
+Barrel** InclinedPlane::convertStringToBarrels(const char *str)
+{
+	int i = strlen(str);
+	Barrel **b = new Barrel* [i];
+	for(int j = 0; j < i; ++j)
+		b[j] = Barrel::readBarrel(str[j]);
+	return b;
+}
+
 
 /**
  * ********************************************************************************
@@ -228,6 +249,21 @@ void InclinedPlane::clear()
 	this->quantityOfRed = 0;
 }
 
+/**
+ * przypisuje strumien wyjsciowy do strumienia logowania
+ */
+void InclinedPlane::makeLogs(std::ostream &a)
+{
+	this->log=&a;
+}
+
+/**
+ * nulluje strumien logowania
+ */
+void InclinedPlane::stopLogs()
+{
+	this->log = NULL;
+}
 
 
 /* ----------------------------------------------------------------------------------------------------- */
@@ -242,11 +278,19 @@ void InclinedPlane::clear()
 /* ----------------------------------------------------------------------------------------------------- */
 /**
  * std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
- *
+ * TODO nie wiem czy to dziala ;/
  */
 std::pair<Barrel*, int>
 InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 {
+	if(this->log)
+	{
+		*(this->log) << "START: std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)" << "\n";
+		this->printBarrelsToStream(*(this->log));
+		*(this->log) << "\n";
+		*(this->log) << "Szukany kolor: " << ii->printBarrel() << "\n";
+	}
+
 	std::pair<Barrel*, int> ret;
 	ret.second = 0;
 	ret.first = NULL;
@@ -270,6 +314,14 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 	}
 	if(ret.first == NULL)
 		assert(0);
+
+	if(this->log)
+	{
+		*(this->log) << "Odleglosc: " << ret.second << "\n";
+		*(this->log) << "Znaleziony kolor: " << ret.first->printBarrel() << "\n";
+		*(this->log) << "END: std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)" << "\n";
+	}
+
 	return ret;
 }
 
@@ -283,6 +335,12 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
  */
 void InclinedPlane::intelligentSort()
 {
+	if(this->log)
+		{
+			*(this->log) << "START: void InclinedPlane::intelligentSort()" << "\n";
+			*(this->log) << "Rozmiar problemu: " << this->list.size() << "\n";
+			*(this->log) << "\n";
+		}
 	int i =0;
 	Barrel *tmp;
 	int encRed=0, encBlue=0, encGreen=0;
@@ -291,7 +349,7 @@ void InclinedPlane::intelligentSort()
 
 	ii = this->list.setCurrentAtStart(); // USTAWIAM POZYCJE AKTUALNA NA POCZATKOWA!!!
 
-	std::cout << "zaczelo sortowac" << std::endl;
+	std::cout << "zaczelo sortowac" << "\n";
 ///**
 	bool notSorted = true;
 
@@ -421,9 +479,17 @@ void InclinedPlane::intelligentSort()
 //	*
 	* */
 
-	std::cout << std::endl << " SPRAWDZENIE SORTOWANIA " << std::endl << std::endl;
+	std::cout << "\n" << " SPRAWDZENIE SORTOWANIA " << "\n" << "\n";
 	//this->printBarrels();
-	std::cout << std::endl << " KONIEC SORTOWANIA " << std::endl << std::endl;
+	std::cout << "\n" << " KONIEC SORTOWANIA " << "\n" << "\n";
+
+	if(this->log)
+	{
+		*(this->log) << "Koniec sortowania" << "\n";
+		this->printBarrelsToStream(*(this->log));
+		*(this->log) << "END: void InclinedPlane::intelligentSort()" << "\n";
+		*(this->log) << "\n";
+	}
 
 }// KONIEC INTELLIGENT SORTA
 
@@ -439,6 +505,18 @@ void InclinedPlane::intelligentSort()
  */
 Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 {
+
+	if(this->log)
+	{
+		*(this->log) << "\n";
+		*(this->log) << "START: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n";
+		*(this->log) << "Przed przestawieniem: " << "\n";
+		this->printBarrelsToStream(*(this->log));
+		*(this->log) << "Krok ity: " << i << "\n";
+		*(this->log) << "Odleglosc od szukanej beczki: " << k << "\n";
+		*(this->log) << "Odleglosc szukanej beczki od konca: " << this->list.size()-i-k-1 << "\n";
+	}
+
 	Barrel* pom = this->list.end();
 	Barrel* p = to;
 	pom = pom->prev(); // --pom;
@@ -513,6 +591,10 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 			//this->printBarrels();
 		}
 	}
+//
+//	if(this->log)
+//		*(this->log) << << "\n";
+
 	int lol=0;
 	while(from->getColor() != c)
 	{
@@ -525,8 +607,18 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 		from = this->swapTrioBehind(from);
 		lol++;
 		//this->printBarrels();
-		std::cout << lol << std::endl;
+		//std::cout << lol << "\n";
 	}
+
+	if(this->log)
+	{
+		*(this->log) << "Po przestawieniu: " << "\n";
+		this->printBarrelsToStream(*(this->log));
+		*(this->log) << "\n";
+		*(this->log) << "END: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n";
+		*(this->log) << "\n";
+	}
+
 	return from;
 }
 

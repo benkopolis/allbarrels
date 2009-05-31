@@ -95,7 +95,28 @@ int main(int argc, char **argv)
 //	std::cout << ifd.getGenTable() << std::endl;
 //	std::cout << ifd.getHowMany() << std::endl;
 
-	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
+	//sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
+
+	// tutaj se testuuuuuuuuuuuuuuuuje
+	char t[100];
+	strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBB\0");
+	AALBarrels::InclinedPlane ip;
+	std::ofstream plik;
+	plik.open("program.log", std::ios_base::app | std::ios_base::out);
+	if(plik.fail())
+	{
+		std::cout << "Nie udalo otworzyc sie pliku z logami\n";
+		ip.makeLogs(std::cout);
+	} else
+		ip.makeLogs(plik);
+
+	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
+	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
+	ip.stopLogs();
+
+	plik.flush();
+	plik.close();
+
 	std::cout << "koooooonieeec" << std::endl;
 
 
