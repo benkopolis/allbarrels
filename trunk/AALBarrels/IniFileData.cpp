@@ -84,6 +84,7 @@ bool IniFileData::loadData()
 		} else if(!strcmp(t, "ShowWork"))
 			this->_ShowWork = getboolean(ini, this->_ShowWork);
 	}
+	ini->close();
 	return true;
 }
 

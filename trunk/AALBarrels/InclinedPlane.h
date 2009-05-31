@@ -66,10 +66,21 @@ public:
 	void printBarrels() const;
 
 	/**
+	 * drukuje beczki na podany strumien
+	 */
+	void printBarrelsToStream(ostream &f) const;
+
+	/**
+	 * drukuje beczki na podany strumien, w miejsce index wstawia ||
+	 */
+	void printBarrelsToStream(ostream &f, int index) const;
+
+	/**
 	 * drukuje kolorowy ciag beczek wstawiajac || w miejsce skad zostaly zabarane
 	 * beczki - int index @param
 	 */
 	void printBarrels(int index) const;
+
 	/**
 	 * uruchamia odpowiednie sortowanie - trzeba podac typ
 	 */
@@ -88,9 +99,25 @@ public:
 	static Barrel** readLineOfBarrels(ifstream *f);
 
 	/**
+	 * Z podanej tablicy charow tworzy tablice wskaznikow na beczki.
+	 * Tablica charow musi konczyc sie znakiem konca tekstu.
+	 */
+	static Barrel** convertStringToBarrels(const char *str);
+
+	/**
 	 * metoda czyszczaca rownie z beczek
 	 */
 	void clear();
+
+	/**
+	 * Funkcja uruchamia strumien logowania
+	 */
+	void makeLogs(std::ostream &a);
+
+	/**
+	 * funkcja zatrzymuje strumien logowania
+	 */
+	void stopLogs();
 
 private:
 
@@ -103,6 +130,8 @@ private:
 	int quantityOfGreen;
 	int quantityOfBlue;
 	int quantityOfRed;
+
+	ostream *log;
 
 private:
 	/**
