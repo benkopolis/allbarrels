@@ -33,7 +33,7 @@ public:
 	void setColor(Color c);
 
 	char printBarrel() const;
-	static Barrel readBarrel(char c);
+	static Barrel* readBarrel(char c);
 
 	/**
 	 * zwraca -1 gdy it ma wiekszy priorytet od this, 0 gdy maja taki sam i

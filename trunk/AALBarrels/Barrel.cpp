@@ -84,9 +84,9 @@ char Barrel::printBarrel() const
 	return c;
 }
 
-Barrel Barrel::readBarrel(char s)
+Barrel* Barrel::readBarrel(char s)
 {
-	Color c;
+	Color c = Barrel::NONE;
 	switch(s)
 	{
 	case 'R':
@@ -100,8 +100,7 @@ Barrel Barrel::readBarrel(char s)
 	default:
 		break;
 	}
-	Barrel b(c);
-	return b;
+	return new Barrel(c);
 }
 
 Barrel* Barrel::next() const

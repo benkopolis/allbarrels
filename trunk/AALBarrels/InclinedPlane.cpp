@@ -5,10 +5,11 @@
  *      Author: zby
  */
 
-#include <iostream>
 #include <vector>
 #include <utility>
+#include <string>
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
 #include <cassert>
 
@@ -16,7 +17,6 @@
 #include "InclinedPlane.h"
 #include "Barrel.h"
 #include "BarrelException.h"
-
 
 namespace AALBarrels
 {
@@ -189,6 +189,29 @@ Barrel** InclinedPlane::generateBarrels(int size)
 	return r;
 }
 
+Barrel** InclinedPlane::readLineOfBarrels(std::ifstream *f)
+{
+	char c;
+	int i = 0;
+	Barrel **ret;
+	char *tab=NULL;
+	const char *cp=NULL;
+	std::string str;
+	std::getline(*f, str);
+	cp = str.c_str();
+	tab = new char [strlen(cp)+1];
+	ret = new Barrel* [strlen(cp)];
+	strcpy(tab, cp);
+	c = tab[0];
+	while(c != '\0' && c != '\n')
+	{
+		ret[i] = Barrel::readBarrel(c);
+		++i;
+		c = tab[i];
+	}
+	return ret;
+}
+
 
 /**
  * ********************************************************************************
@@ -217,9 +240,9 @@ void InclinedPlane::clear()
 /* ----------------------------------------------------------------------------------------------------- */
 /* -------------------------------- CLASS PRIVATE METHOD -------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
-/** 
+/**
  * std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
- * 
+ *
  */
 std::pair<Barrel*, int>
 InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
@@ -255,8 +278,8 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 /* ----------------------------------------------------------------------------------------------------- */
 /* -------------------------------- CLASS PRIVATE METHOD -------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
-/** void InclinedPlane::intelligentSort() 
- * 
+/** void InclinedPlane::intelligentSort()
+ *
  */
 void InclinedPlane::intelligentSort()
 {
@@ -318,7 +341,7 @@ void InclinedPlane::intelligentSort()
 				// posortowane - tzn zamiast green jest blue - zwiekszamy licznik
 				++encBlue;
 			} else
-			{	
+			{
 				++encGreen;
 				notSorted = false;
 			}
@@ -412,7 +435,7 @@ void InclinedPlane::intelligentSort()
 /* -------------------------------- CLASS PRIVATE METHOD -------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
 /** Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
- * 
+ *
  */
 Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 {
@@ -514,8 +537,8 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 /* ----------------------------------------------------------------------------------------------------- */
 /* -------------------------------- CLASS PRIVATE METHOD -------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
-/** Barrel* InclinedPlane::swapTrioBefore(Barrel* last) 
- * 
+/** Barrel* InclinedPlane::swapTrioBefore(Barrel* last)
+ *
  */
 Barrel* InclinedPlane::swapTrioBefore(Barrel* last)
 {
@@ -530,7 +553,7 @@ Barrel* InclinedPlane::swapTrioBefore(Barrel* last)
 /* -------------------------------- CLASS PRIVATE METHOD -------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
 /** Barrel* InclinedPlane::swapTrioBehind(Barrel* first)
- * 
+ *
  */
 Barrel* InclinedPlane::swapTrioBehind(Barrel* first)
 {
