@@ -8,9 +8,14 @@
 #ifndef INCLINEDPLANE_H_
 #define INCLINEDPLANE_H_
 
-#include <list>
+#include <iostream>
+#include <fstream>
+
 #include "BarrelsList.h"
 #include "Barrel.h"
+
+using namespace std;
+
 
 namespace AALBarrels
 {
@@ -75,6 +80,12 @@ public:
 	 * zwraca tabele o podanej wielkosci
 	 */
 	static Barrel** generateBarrels(int size);
+
+	/**
+	 * Z podanego strumienia czytana jest linijka i na jej podstawie
+	 * tworzona jest tablica wskaznikow na beczki.
+	 */
+	static Barrel** readLineOfBarrels(ifstream *f);
 
 	/**
 	 * metoda czyszczaca rownie z beczek

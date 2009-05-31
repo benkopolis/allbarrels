@@ -23,7 +23,7 @@ IniFileData::IniFileData()
 IniFileData::IniFileData(char *fileName)
 {
 	this->initVariables();
-	this->_iniFileName = new char [strlen(fileName)];
+	this->_iniFileName = new char [strlen(fileName)+1];
 	strcpy(this->_iniFileName, fileName);
 }
 
