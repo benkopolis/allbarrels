@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 
 	// tutaj se testuuuuuuuuuuuuuuuuje
 	char t[100];
-	strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBB\0");
+	//strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBBRGBBGRR\0");
 	AALBarrels::InclinedPlane ip;
 	std::ofstream plik;
 	plik.open("program.log", std::ios_base::app | std::ios_base::out);
@@ -110,9 +110,19 @@ int main(int argc, char **argv)
 	} else
 		ip.makeLogs(plik);
 
+//	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
+//	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
+	strcpy(t, "BGBRGBRGBRGBRBRBGBBBRBGBBRBRGBGBBGGRBGRRGRGGBGBGBBRBRGRBBBGR\0");
+//	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
+//	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
+//
+//	ip.clear();
 	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
 	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
+
 	ip.stopLogs();
+
+
 
 	plik.flush();
 	plik.close();

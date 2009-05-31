@@ -288,7 +288,12 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 		*(this->log) << "START: std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)" << "\n";
 		this->printBarrelsToStream(*(this->log));
 		*(this->log) << "\n";
-		*(this->log) << "Szukany kolor: " << ii->printBarrel() << "\n";
+		if(e == Barrel::BLUE)
+			*(this->log) << "Szukany kolor: " << "B" << "\n";
+		else if(e == Barrel::GREEN)
+			*(this->log) << "Szukany kolor: " << "G" << "\n";
+		else if(e == Barrel::RED)
+			*(this->log) << "Szukany kolor: " << "R" << "\n";
 	}
 
 	std::pair<Barrel*, int> ret;
@@ -313,7 +318,7 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 		i = i->next();//++ii;
 	}
 	if(ret.first == NULL)
-		assert(0);
+		{system("sleep 1"); {system("sleep 1"); assert(0); } }
 
 	if(this->log)
 	{
@@ -336,11 +341,13 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 void InclinedPlane::intelligentSort()
 {
 	if(this->log)
-		{
-			*(this->log) << "START: void InclinedPlane::intelligentSort()" << "\n";
-			*(this->log) << "Rozmiar problemu: " << this->list.size() << "\n";
-			*(this->log) << "\n";
-		}
+	{
+		*(this->log) << "\n";
+		*(this->log) << "\n";
+		*(this->log) << "START: void InclinedPlane::intelligentSort()" << "\n";
+		*(this->log) << "Rozmiar problemu: " << this->list.size() << "\n";
+		*(this->log) << "\n";
+	}
 	int i =0;
 	Barrel *tmp;
 	int encRed=0, encBlue=0, encGreen=0;
@@ -366,10 +373,10 @@ void InclinedPlane::intelligentSort()
 				info = this->findRight(Barrel::RED, ii);
 				tmp = info.first;
 				if(ii == this->list.end()) // end nie powinien sie tu pojawic
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::RED) // zwrocona beczka powinna miec
-					assert(0);							// odpowiedni kolor
+					{system("sleep 1"); assert(0); }							// odpowiedni kolor
 				// posortowane - tzn zamiast blue jest red - zwiekszamy licznik
 				++encRed;
 			} else
@@ -381,10 +388,10 @@ void InclinedPlane::intelligentSort()
 				info = this->findRight(Barrel::RED, ii);
 				tmp = info.first;
 				if(ii == this->list.end()) // end nie powinien sie tu pojawic
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::RED)// zwrocona beczka powinna miec
-					assert(0);							// odpowiedni kolor
+					{system("sleep 1"); assert(0); }							// odpowiedni kolor
 				// posortowane - tzn zamiast green jest red - zwiekszamy licznik
 				++encRed;
 			} else if(encBlue != this->quantityOfBlue)
@@ -392,10 +399,10 @@ void InclinedPlane::intelligentSort()
 				info = this->findRight(Barrel::BLUE, ii);
 				tmp = info.first;
 				if(ii == this->list.end()) // end nie powinien sie tu pojawic
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::BLUE) // zwrocona beczka powinna miec
-					assert(0);							// odpowiedni kolor
+					{system("sleep 1"); assert(0); }							// odpowiedni kolor
 				// posortowane - tzn zamiast green jest blue - zwiekszamy licznik
 				++encBlue;
 			} else
@@ -405,7 +412,7 @@ void InclinedPlane::intelligentSort()
 			}
 			break;
 		default: // CASE NONE
-			assert(0);
+			{system("sleep 1"); assert(0); }
 		} // KONIEC SWITCHA
 		// PRZEMIELILO - znaczy do aktualnej pozycji jest posortowane
 		// wiec ide aktualna pozycja do przodu - zatrzymam sie na nastepnej zlej beczce
@@ -432,7 +439,7 @@ void InclinedPlane::intelligentSort()
 				tmp = info.first;
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::RED)
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = ii->next();
 				// posortowane - tzn zamiast blue jest red - zwiekszamy licznik
 				++encRed;
@@ -449,7 +456,7 @@ void InclinedPlane::intelligentSort()
 				tmp = info.first;
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::RED)
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = ii->next();
 				// posortowane - tzn zamiast green jest red - zwiekszamy licznik
 				++encRed;
@@ -459,7 +466,7 @@ void InclinedPlane::intelligentSort()
 				tmp = info.first;
 				ii = this->moveTrios(ii, info.first, info.second, i);
 				if(ii->getColor() != Barrel::BLUE)
-					assert(0);
+					{system("sleep 1"); assert(0); }
 				ii = ii->next();
 				// posortowane - tzn zamiast green jest blue - zwiekszamy licznik
 				++encBlue;
@@ -488,6 +495,7 @@ void InclinedPlane::intelligentSort()
 		*(this->log) << "Koniec sortowania" << "\n";
 		this->printBarrelsToStream(*(this->log));
 		*(this->log) << "END: void InclinedPlane::intelligentSort()" << "\n";
+		*(this->log) << "\n";
 		*(this->log) << "\n";
 	}
 
