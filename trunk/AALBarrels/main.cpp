@@ -71,12 +71,27 @@ double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int 
 
 int main(int argc, char **argv)
 {
-	char *n = new char [strlen("/home/zby/worskpaceCiCpp/example.ini\0")];
-	strcpy(n, "/home/zby/worskpaceCiCpp/example.ini");
+	char *n = NULL;
+	if(argc == 1)
+	{
+		n = new char [strlen("./example.ini\0")];
+		strcpy(n, "./example.ini");
+	} else
+	{
+		n = new char [strlen(argv[1])+1];
+		strcpy(n, argv[1]);
+	}
+
 	AALBarrels::IniFileData ifd(n);
 
 	ifd.loadData();
-
+	std::cout << ifd.getChangeVal() << std::endl;
+	std::cout << ifd.getChangeWay() << std::endl;
+	std::cout << ifd.getCheckTimes() << std::endl;
+	std::cout << ifd.getConsole() << std::endl;
+	std::cout << ifd.getIterCount() << std::endl;
+	std::cout << ifd.getGenTable() << std::endl;
+	std::cout << ifd.getHowMany() << std::endl;
 
 //	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
 //	std::cout << "koooooonieeec" << std::endl;
