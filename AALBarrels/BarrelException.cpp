@@ -18,7 +18,6 @@ namespace AALBarrels
 
 BarrelException::BarrelException()
 {
-	// TODO Auto-generated constructor stub
 	this->exceptionName = "BarrelException::NoBarrelExceptionKindSet";
 	this->exceptionType = BarrelException::NoBarrelExceptionKindSet;
 }
@@ -30,7 +29,6 @@ BarrelException::BarrelException(BarrelExceptionKind e)
 
 BarrelException::~BarrelException()
 {
-	// TODO Auto-generated destructor stub
 }
 
 

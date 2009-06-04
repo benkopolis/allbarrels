@@ -18,7 +18,6 @@ namespace AALBarrels
 /* ----------------------------------------------------------------------------------------------------- */
 BarrelsList::BarrelsList()
 {
-	// TODO Auto-generated constructor stub
 	_end = new Barrel(Barrel::NONE);
 	_start = _end;
 	_size = 0;
