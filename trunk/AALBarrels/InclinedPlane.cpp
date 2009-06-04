@@ -532,7 +532,16 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 	if(this->log)
 	{
 		*(this->log) << "\n";
-		*(this->log) << "START: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n";
+		*(this->log) << "START: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n\n";
+		*(this->log) << "Wskaznik przekazany powinien lezec tuz za posortowanym ciagiem." << "\n";
+			*(this->log) << "Beczka z parametru: " << from->printBarrel() << "\n";
+			if(from->prev())
+				*(this->log) << "Poprzednia beczka: " << from->prev()->printBarrel() << "\n";
+			if(from->next())
+			{	*(this->log) << "A dwie nastepne beczki to: " << from->next()->printBarrel();
+				if(from->next()->next())
+					*(this->log) << ", " << from->next()->next()->printBarrel() << "\n\n";
+			}
 		*(this->log) << "Przed przestawieniem: " << "\n";
 		this->printBarrelsToStream(*(this->log));
 		*(this->log) << "Krok ity: " << i << "\n";
@@ -543,6 +552,9 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 
 	Barrel* pom = this->list.end();
 	Barrel* p = to;
+	Barrel* tmp = NULL;
+	if(from->prev())
+		tmp = from->prev();
 	pom = pom->prev(); // --pom;
 	Barrel::Color c = to->getColor();
 	int l = this->list.size()-i-k-1; // z -1 jest dobrze ALE wchodzi i tak do zlych przypadkow - momentami zle zlicza!
@@ -587,7 +599,7 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 				//this->printBarrels();
 			}
 			t = t->prev();
-			this->swapTrioBehind(t);
+			t = this->swapTrioBehind(t);
 			//this->printBarrels();
 		} else if(l % 3 == 1)
 		{
@@ -602,7 +614,7 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 				t = this->swapTrioBefore(t);
 				//this->printBarrels();
 			}
-			this->swapTrioBehind(t);
+			t = this->swapTrioBehind(t);
 			//this->printBarrels();
 		} else if(l % 3 == 2)
 		{
@@ -653,34 +665,64 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 			//this->printBarrels();
 		}
 	}
-	if(this->log)
+	if(k % 3 != 0)
+	{
+		if(this->log)
+			{
+				*(this->log) << "\n";
+				*(this->log) << "Po przestawieniu korekcyjnym:" << "\n";
+				this->printBarrelsToStream(*log);
+				this->log->flush();
+			}
+	}
+	int lol=0;
+	if(tmp)
+		from = tmp->next();
+	else
+		from = this->list.start();
+	while(from->getColor() != c)
+	{
+		if(this->log)
 		{
 			*(this->log) << "\n";
-			*(this->log) << "Po przestawieniu korekcyjnym:" << "\n";
-			this->printBarrelsToStream(*log);
+			*(this->log) << "Probuje przestawic beczke: " << from->printBarrel() << "\n";
+			if(from->next())
+			{
+				*(this->log) << "Za ktora stoja beczki: " << from->next()->printBarrel();
+				if(from->next()->next())
+					*(this->log) << ", " << from->next()->next()->printBarrel() << "\n\n";
+			}
+			this->log->flush();
+		}
+		from = this->swapTrioBehind(from);
+		lol++;
+		if(this->log)
+		{
+			*(this->log) << "Otrzymalem beczke: " << from->printBarrel() << "\n";
+			if(from->next())
+			{
+				*(this->log) << "Za ktora stoja beczki: " << from->next()->printBarrel();
+				if(from->next()->next())
+					*(this->log) << ", " << from->next()->next()->printBarrel() << "\n\n";
+			}
 			this->log->flush();
 		}
 
-	int lol=0;
-	while(from->getColor() != c)
-	{
-	//	this->printBarrels();
-	//	if(from->prev()->getColor() != c)
-	//	{
-	//		while(from->prev()->getColor() == c)
-//				from = from->prev();
-	//	}
-		from = this->swapTrioBehind(from);
-		lol++;
-		//this->printBarrels();
-		//std::cout << lol << "\n";
 	}
 
 	if(this->log)
 	{
 		*(this->log) << "Po przestawieniu: " << "\n";
 		this->printBarrelsToStream(*(this->log));
-		*(this->log) << "\n";
+		*(this->log) << "Wskaznik zwracany powinien lezec tuz za posortowanym ciagiem." << "\n";
+		*(this->log) << "Zwracana beczka: " << from->printBarrel() << "\n";
+		if(from->prev())
+			*(this->log) << "Poprzednia beczka: " << from->prev()->printBarrel() << "\n";
+		if(from->next())
+		{	*(this->log) << "A dwie nastepne beczki to: " << from->next()->printBarrel();
+			if(from->next()->next())
+				*(this->log) << ", " << from->next()->next()->printBarrel() << "\n\n";
+		}
 		*(this->log) << "END: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n";
 		*(this->log) << "\n";
 		this->log->flush();
