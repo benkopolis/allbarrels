@@ -23,6 +23,7 @@ BarrelsList::BarrelsList()
 	_start = _end;
 	_size = 0;
 	_current = _end;
+
 }
 
 /* ----------------------------------------------------------------------------------------------------- */
@@ -105,16 +106,16 @@ Barrel *BarrelsList::putTrioAtEnd(Barrel *first)
 	Barrel *f, *s, *t, *r;
 	f = first;
 	if(f == this->_end)
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	s = f->next();
 	if(s == this->_end)
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	t = s->next();
 	if(t == this->_end)
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	r = t->next();
 	if(r == this->_end)
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	if(f == this->_start)
 		this->_start = t->next();
 	if(f == this->_current || s == this->_current || t == this->_current)
@@ -144,7 +145,7 @@ Barrel *BarrelsList::shiftCurrentForward()
 	if(this->_current->next())
 		this->_current = _current->next();
 	else
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	return this->_current;
 }
 
@@ -155,7 +156,7 @@ Barrel *BarrelsList::shiftCurrentBackward()
 	if(this->_current->prev())
 		this->_current = _current->prev();
 	else
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	return this->_current;
 }
 
@@ -180,7 +181,7 @@ Barrel *BarrelsList::setCurrenAtEnd()
 Barrel *BarrelsList::erase(Barrel *t)
 {
 	if(t == this->_end)
-		{system("sleep 1"); assert(0); }
+		{system("sleep 3"); assert(0); }
 	--(this->_size); // zmniejszam rozmiar
 	Barrel *tmp;
 	if(t == this->_start)

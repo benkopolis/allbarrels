@@ -58,7 +58,8 @@ InclinedPlane::~InclinedPlane()
  */
 void InclinedPlane::addBarrel(Barrel *b)
 {
-	this->list.addOnEnd(b);
+	Barrel *r;
+	r = this->list.addOnEnd(b);
 	try
 	{
 		switch(b->getColor())
@@ -83,6 +84,7 @@ void InclinedPlane::addBarrel(Barrel *b)
 	{
 		std::cerr << e.getMessage();
 	};
+	return r;
 }
 
 void InclinedPlane::addBarrel(Barrel** b, int size)
@@ -161,10 +163,25 @@ void InclinedPlane::printBarrels(int index) const
  */
 void InclinedPlane::startSort(SortType s)
 {
+	Barrel *pom = new Barrel(Barrel::GREEN);
+	Barrel *tmp;
+	bool cheat = false;
 	if(this->quantityOfGreen < 3)
 		return;
+	if(this->list.size() % 3 == 0) // dla podzielnych przez 3 sie wykrzacza: dodaje 1 beczke
+	{
+		tmp = this->addBarrel(pom);
+		cheat = true;
+	}
 	if(s == InclinedPlane::IntelligentSort)
 		this->intelligentSort();
+	delete pom;
+	if(cheat == true) // jak dodalem jedna beczke, to ja usuwam
+	{
+		this->list.erase(tmp);
+		delete tmp;
+	}
+
 }
 
 
