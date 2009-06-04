@@ -30,7 +30,6 @@ namespace AALBarrels
  */
 InclinedPlane::InclinedPlane()
 {
-	// TODO Auto-generated constructor stub
 	this->quantityOfBlue = 0;
 	this->quantityOfGreen = 0;
 	this->quantityOfRed = 0;
@@ -45,8 +44,6 @@ InclinedPlane::InclinedPlane()
  */
 InclinedPlane::~InclinedPlane()
 {
-	// TODO Auto-generated destructor stub
-
 }
 
 /**
@@ -565,10 +562,24 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
  * l - odleglosc beczki od konca listy
  */
 	//this->printBarrels();
+	if(k % 3 != 0)
+	{
+		if(this->log)
+		{
+			*(this->log) << "\n";
+			*(this->log) << "Przestawienie korekcyjne: " << k << " i ";
+			this->log->flush();
+		}
+	}
 	if(k % 3 == 1)
 	{
 		if(l % 3 == 0)
 		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 1 i 0" << "\n";
+				this->log->flush();
+			}
 			if(l == 0)
 			{
 				t = t->prev();
@@ -580,6 +591,11 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 			//this->printBarrels();
 		} else if(l % 3 == 1)
 		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 1 i 1" << "\n";
+				this->log->flush();
+			}
 			if(l == 1)
 			{
 				t = t->prev();
@@ -590,6 +606,11 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 			//this->printBarrels();
 		} else if(l % 3 == 2)
 		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 1 i 2" << "\n";
+				this->log->flush();
+			}
 			t = t->prev();
 			this->swapTrioBehind(t);
 			//this->printBarrels();
@@ -598,6 +619,11 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 	{
 		if(l % 3 == 0)
 		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 2 i 0" << "\n";
+				this->log->flush();
+			}
 			if(l == 0)
 			{
 				t = t->prev();
@@ -608,19 +634,32 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 			//this->printBarrels();
 		} else if(l % 3 == 1)
 		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 2 i 1" << "\n";
+				this->log->flush();
+			}
 			this->swapTrioBefore(t);
 			//this->printBarrels();
 		} else if(l % 3 == 2)
-		{ // jak ilosc beczek miedzy dobra, a kocem listy wynosi 3*c + 2, to cofam wsk o 1 i przenosze 3 beczki
-			// nie ma prawa przeniesc enda!!!
+		{
+			if(this->log)
+			{
+				*(this->log) << l << " czyli 2 i 2" << "\n";
+				this->log->flush();
+			}
 			t = t->prev();
 			this->swapTrioBehind(t);
 			//this->printBarrels();
 		}
 	}
-//
-//	if(this->log)
-//		*(this->log) << << "\n";
+	if(this->log)
+		{
+			*(this->log) << "\n";
+			*(this->log) << "Po przestawieniu korekcyjnym:" << "\n";
+			this->printBarrelsToStream(*log);
+			this->log->flush();
+		}
 
 	int lol=0;
 	while(from->getColor() != c)

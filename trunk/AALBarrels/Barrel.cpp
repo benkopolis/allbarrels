@@ -42,7 +42,6 @@ Barrel::Barrel(const Barrel& another)
 
 Barrel::~Barrel()
 {
-	// TODO Auto-generated destructor stub
 	this->_prev = NULL;
 	this->_next = NULL;
 }
