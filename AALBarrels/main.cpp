@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
 //	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
 
-	 tutaj se testuuuuuuuuuuuuuuuuje
+//	 tutaj se testuuuuuuuuuuuuuuuuje
 	char t[100];
 	//strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBBRGBBGRR\0");
 	AALBarrels::InclinedPlane ip;
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
 	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
 //
-//	ip.clear();
+	ip.clear();
 //	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
 //	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
 //
