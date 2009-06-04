@@ -53,7 +53,7 @@ public:
 	 * dodaje podana beczke do listy beczek, jednoczesnie zlicza dodane beczki o danych
 	 * kolorach
 	 */
-	void addBarrel(Barrel* b);
+	Barrel* addBarrel(Barrel* b);
 
 	/**
 	 * dodaje size beczek do listy beczek

@@ -56,7 +56,7 @@ InclinedPlane::~InclinedPlane()
  * ***************** void InclinedPlane::addBarrel(Barrel *b) *********************
  * ********************************************************************************
  */
-void InclinedPlane::addBarrel(Barrel *b)
+Barrel* InclinedPlane::addBarrel(Barrel *b)
 {
 	Barrel *r;
 	r = this->list.addOnEnd(b);
@@ -163,24 +163,21 @@ void InclinedPlane::printBarrels(int index) const
  */
 void InclinedPlane::startSort(SortType s)
 {
-	Barrel *pom = new Barrel(Barrel::GREEN);
-	Barrel *tmp;
-	bool cheat = false;
+//	Barrel *pom = new Barrel(Barrel::GREEN);
+//	Barrel *tmp;
+//	bool cheat = false;
 	if(this->quantityOfGreen < 3)
 		return;
-	if(this->list.size() % 3 == 0) // dla podzielnych przez 3 sie wykrzacza: dodaje 1 beczke
-	{
-		tmp = this->addBarrel(pom);
-		cheat = true;
-	}
+//	if(this->list.size() % 3 == 0) // dla podzielnych przez 3 sie wykrzacza: dodaje 1 beczke
+//	{
+//		tmp = this->addBarrel(pom);
+//		cheat = true;
+//	}
 	if(s == InclinedPlane::IntelligentSort)
 		this->intelligentSort();
-	delete pom;
-	if(cheat == true) // jak dodalem jedna beczke, to ja usuwam
-	{
-		this->list.erase(tmp);
-		delete tmp;
-	}
+//	delete pom;
+//	if(cheat == true) // jak dodalem jedna beczke, to ja usuwam
+//		this->list.erase(tmp);
 
 }
 
@@ -311,6 +308,7 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 			*(this->log) << "Szukany kolor: " << "G" << "\n";
 		else if(e == Barrel::RED)
 			*(this->log) << "Szukany kolor: " << "R" << "\n";
+		this->log->flush();
 	}
 
 	std::pair<Barrel*, int> ret;
@@ -342,6 +340,7 @@ InclinedPlane::findRight(Barrel::Color e, Barrel* ii)
 		*(this->log) << "Odleglosc: " << ret.second << "\n";
 		*(this->log) << "Znaleziony kolor: " << ret.first->printBarrel() << "\n";
 		*(this->log) << "END: std::pair<Barrel*, int> InclinedPlane::findRight(Barrel::Color e, Barrel* ii)" << "\n";
+		this->log->flush();
 	}
 
 	return ret;
@@ -364,6 +363,7 @@ void InclinedPlane::intelligentSort()
 		*(this->log) << "START: void InclinedPlane::intelligentSort()" << "\n";
 		*(this->log) << "Rozmiar problemu: " << this->list.size() << "\n";
 		*(this->log) << "\n";
+		this->log->flush();
 	}
 	int i =0;
 	Barrel *tmp;
@@ -514,6 +514,7 @@ void InclinedPlane::intelligentSort()
 		*(this->log) << "END: void InclinedPlane::intelligentSort()" << "\n";
 		*(this->log) << "\n";
 		*(this->log) << "\n";
+		this->log->flush();
 	}
 
 }// KONIEC INTELLIGENT SORTA
@@ -540,6 +541,7 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 		*(this->log) << "Krok ity: " << i << "\n";
 		*(this->log) << "Odleglosc od szukanej beczki: " << k << "\n";
 		*(this->log) << "Odleglosc szukanej beczki od konca: " << this->list.size()-i-k-1 << "\n";
+		this->log->flush();
 	}
 
 	Barrel* pom = this->list.end();
@@ -642,6 +644,7 @@ Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)
 		*(this->log) << "\n";
 		*(this->log) << "END: Barrel* InclinedPlane::moveTrios(Barrel *from, Barrel *to, int k, int i)" << "\n";
 		*(this->log) << "\n";
+		this->log->flush();
 	}
 
 	return from;

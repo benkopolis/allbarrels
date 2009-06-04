@@ -81,23 +81,11 @@ int main(int argc, char **argv)
 		n = new char [strlen(argv[1])+1];
 		strcpy(n, argv[1]);
 	}
-	delete [] n;
-	n = NULL;
 
-//	AALBarrels::IniFileData ifd(n);
-//
-//	ifd.loadData();
-//	std::cout << ifd.getChangeVal() << std::endl;
-//	std::cout << ifd.getChangeWay() << std::endl;
-//	std::cout << ifd.getCheckTimes() << std::endl;
-//	std::cout << ifd.getConsole() << std::endl;
-//	std::cout << ifd.getIterCount() << std::endl;
-//	std::cout << ifd.getGenTable() << std::endl;
-//	std::cout << ifd.getHowMany() << std::endl;
 
-	//sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
+//	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
 
-	// tutaj se testuuuuuuuuuuuuuuuuje
+	 tutaj se testuuuuuuuuuuuuuuuuje
 	char t[100];
 	//strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBBRGBBGRR\0");
 	AALBarrels::InclinedPlane ip;
@@ -113,24 +101,25 @@ int main(int argc, char **argv)
 //	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
 //	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
 	strcpy(t, "BGBRGBRGBRGBRBRBGBBBRBGBBRBRGBGBBGGRBGRRGRGGBGBGBBRBRGRBBBGR\0");
+	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
+	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
+//
+//	ip.clear();
 //	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
 //	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
 //
-//	ip.clear();
-	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
-	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
-
 	ip.stopLogs();
 
 
-
+//
 	plik.flush();
 	plik.close();
 
 	std::cout << "koooooonieeec" << std::endl;
 
 
-
+	delete [] n;
+	n = NULL;
 
 #ifdef WIN32
 	system("PAUSE");
