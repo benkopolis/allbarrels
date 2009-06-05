@@ -83,6 +83,25 @@ bool IniFileData::loadData()
 			}
 		} else if(!strcmp(t, "ShowWork"))
 			this->_ShowWork = getboolean(ini, this->_ShowWork);
+		else if(!strcmp(t, "WorkLogFile"))
+		{
+			temp = getstring(ini, this->_WorkLogFile);
+			if(strcmp(this->_WorkLogFile, temp) < 0 || strcmp(this->_WorkLogFile, temp) > 0)
+			{
+				delete [] this->_WorkLogFile;
+				this->_WorkLogFile = new char [strlen(temp)];
+				strcpy(this->_WorkLogFile, temp);
+			}
+		} else if(!strcmp(t, "TableFile"))
+		{
+			temp = getstring(ini, this->_TableFile);
+			if(strcmp(this->_TableFile, temp) < 0 || strcmp(this->_TableFile, temp) > 0)
+			{
+				delete [] this->_TableFile;
+				this->_TableFile = new char [strlen(temp)];
+				strcpy(this->_TableFile, temp);
+			}
+		}
 	}
 	ini->close();
 	return true;
@@ -164,6 +183,18 @@ char* IniFileData::getChangeWay() const
         return _CheckTimes;
     }
 
+	char* IniFileData::getTableFile() const
+	{
+		return _TableFile;
+	}
+
+	char* IniFileData::getWorkLogFile() const
+	{
+		return _WorkLogFile;
+	}
+
+
+
     /**
  * -------------------------------------------------------------------------------------
  *  PROTECTED GETTERS AND SETTERS
@@ -227,6 +258,16 @@ char* IniFileData::getChangeWay() const
     void IniFileData::setCheckTimes(bool _CheckTimes)
     {
         this->_CheckTimes = _CheckTimes;
+    }
+
+    void IniFileData::setTableFile(char *_TableFile)
+    {
+       this->_TableFile = _TableFile;
+    }
+
+    void IniFileData::setWorkLogFile(char *_WorkLogFile)
+    {
+       this->_WorkLogFile = _WorkLogFile;
     }
 
     /**
@@ -306,12 +347,16 @@ void IniFileData::initVariables()
 	this->_GenTable = true;
 	this->_IterCount = 10;
 	this->_Load = false;
-	this->_LoadFromFile = new char [30];
-	strcpy(this->_LoadFromFile, "dane.dat");
+	this->_LoadFromFile = new char [strlen("dane.dat\0")];
+	strcpy(this->_LoadFromFile, "dane.dat\0");
 	this->_Sav = false;
-	this->_SavToFile = new char [30];
-	strcpy(this->_SavToFile, "dane.dat");
+	this->_SavToFile = new char [strlen("dane.dat\0")];
+	strcpy(this->_SavToFile, "dane.dat\0");
 	this->_ShowWork = false;
+	this->_TableFile = new char [strlen("table.txt\0")];
+	strcpy(this->_TableFile, "table.txt\0");
+	this->_WorkLogFile = new char [strlen("program.log\0")];
+	strcpy(this->_WorkLogFile, "program.log\0");
 }
 
 

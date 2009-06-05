@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
+#include <utility>
+#include <cmath>
 
 #ifdef _WIN32
 
@@ -53,11 +55,13 @@ enum Flag {
  * @return jezeli ma mierzyc czasy to zwraza tablice czasow zmierzonych z wartoscia -1 w ostatniej
  * 			komorce, a jak nie to zwraca NULL
  */
-double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int chVal, int baseVal);
+std::pair<double*, int*> sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int chVal, int baseVal);
 
+double* q(std::pair< double*, int* > data, int s);
 
+double* T(int *n, int s);
 
-
+void printTable(std::pair< double*, int* > data, double *aq, int s, std::ostream &f);
 
 
 
@@ -72,6 +76,9 @@ double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int 
 int main(int argc, char **argv)
 {
 	char *n = NULL;
+	Flag flag = INT_SORT;
+	int chV = 0, bV = 0, i=0;
+	std::pair<double*, int*> result;
 	if(argc == 1)
 	{
 		n = new char [strlen("./example.ini\0")];
@@ -81,39 +88,66 @@ int main(int argc, char **argv)
 		n = new char [strlen(argv[1])+1];
 		strcpy(n, argv[1]);
 	}
-
-
-//	sortNtimes(10, (new AALBarrels::InclinedPlane()), (Flag)(ADD | INT_SORT), 10, 20);
-
-//	 tutaj se testuuuuuuuuuuuuuuuuje
-	char t[100];
-	//strcpy(t, "RGBGGGGBBBBBBBBBBGRRRRRRRRRRRRGGGGRRRRRRRRRBBBBBBBBBBBBBBBBGGGGGGGGGGGGGRGRBGGGBBBBGGRRRRGBBBRGBBGRR\0");
+	AALBarrels::IniFileData ifd(n); // tworze parsera pliku ini
+	ifd.loadData(); // laduje dane
+	delete [] n;
+	n = NULL;
 	AALBarrels::InclinedPlane ip;
-	std::ofstream plik;
-	plik.open("program.log", std::ios_base::app | std::ios_base::out);
-	if(plik.fail())
+	std::ofstream plik, plikT, plikS;
+	std::ifstream plikL;
+	if(ifd.getShowWork())
 	{
-		std::cout << "Nie udalo otworzyc sie pliku z logami\n";
-		ip.makeLogs(std::cout);
-	} else
-		ip.makeLogs(plik);
+		plik.open(ifd.getWorkLogFile(), std::ios_base::app | std::ios_base::out);
+		if(plik.fail())
+		{
+			std::cout << "Nie udalo otworzyc sie pliku z logami\n";
+			ip.makeLogs(std::cout);
+		} else
+			ip.makeLogs(plik);
+	}
+	if(ifd.getGenTable())
+	{
+		plikT.open(ifd.getTableFile(), std::ios_base::app | std::ios_base::out);
+		if(plikT.fail())
+			std::cout << "Nie udalo otworzyc sie pliku do tabelki.\n" << "Tabelka nie zostanie wygenerowana\n";
+		flag = (Flag)(flag | TIME);
+	}
+	if(!strcmp(ifd.getChangeWay(), "add"))
+		flag = (Flag)(flag | ADD);
+	else
+		flag = (Flag)(flag | MULT);
+	if(ifd.getLoad())
+	{
+		plikL.open(ifd.getLoadFromFile(), std::ios::in);
+		if(plikL.fail())
+			std::cout << "Nie udalo sie otworzyc pliku do LOAD\n";
+	}
+	if(ifd.getSav())
+	{
+		plikS.open(ifd.getSavToFile(), std::ios_base::app | std::ios_base::out);
+		if(plikS.fail())
+			std::cout << "Nie udalo sie otworzyc pliku do SAV \n";
+	}
+	chV = ifd.getChangeVal();
+	bV = ifd.getHowMany();
+	i = ifd.getIterCount();
 
-//	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
-//	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
-	strcpy(t, "BGBRGBRGBRGBRBRBGBBBRBGBBRBRGBGBBGGRBGRRGRGGBGBGBBRBRGRBBBGR\0");
-	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
-	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
-//
-	ip.clear();
-//	ip.addBarrel(AALBarrels::InclinedPlane::convertStringToBarrels(t), strlen(t));
-//	ip.startSort(AALBarrels::InclinedPlane::IntelligentSort);
-//
+
+	result = sortNtimes(i, &ip, flag, chV, bV);
+	double *qn = q(result, i);
+	if(plikT.is_open())
+		printTable(result, qn, i, plikT);
+
 	ip.stopLogs();
 
-
-//
 	plik.flush();
 	plik.close();
+	plikT.flush();
+	plikT.close();
+//	plikL.flush();
+	plikL.close();
+	plikS.flush();
+	plikS.close();
 
 	std::cout << "koooooonieeec" << std::endl;
 
@@ -138,16 +172,20 @@ int main(int argc, char **argv)
  */
 
 
-double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int chVal, int baseVal)
+std::pair<double*, int*> sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int chVal, int baseVal)
 {
 	double *times;
+	int *n;
 	AALBarrels::Barrel **b;
 	int sort_type;
 	int val = baseVal;
 	if(flags & INT_SORT)
 		sort_type = AALBarrels::InclinedPlane::IntelligentSort;
 	if(flags & TIME)
+	{
 		times = new double [howMany+1];
+		n = new int [howMany+1];
+	}
 	else
 		times = NULL;
 	for(int i=0; i<howMany; ++i)
@@ -155,16 +193,57 @@ double* sortNtimes(int howMany, AALBarrels::InclinedPlane* obj, Flag flags, int 
 		b = AALBarrels::InclinedPlane::generateBarrels(val);
 		obj->addBarrel(b, val);
 		if(times)
-			times[i] = time(NULL);
+		{
+			times[i] = clock();
+			n[i] = val;
+		}
 		obj->startSort((AALBarrels::InclinedPlane::SortType)sort_type);
 		if(times)
-			times[i] = time(NULL) - times[i];
+			times[i] = clock() - times[i];
 		obj->clear();
 		if((flags & MULT) && !(flags & ADD))
 			val = val + chVal * baseVal;
 		if(flags & ADD)
 			val = val + chVal;
 	}
-	return times;
+	times[howMany] = 0;
+	n[howMany] = 0;
+	return std::make_pair(times, n);
 }
 
+
+double* q(std::pair< double*, int* > data, int s)
+{
+	double Tnmediana = 0, tnmediana = 0;
+	double *Tn = T(data.second, s);
+	double *ret = new double [s];
+	if(s%2 == 0)
+	{
+		Tnmediana = Tn[s/2];
+		tnmediana = data.first[s/2];
+	} else
+	{
+		Tnmediana = (Tn[s/2] + Tn[s/2 +1])/2.0;
+		tnmediana = (data.first[s/2] + data.first[s/2 + 1])/2.0;
+	}
+	for(int i=0; i<s; ++i)
+		ret[i] = (data.first[i] * Tnmediana)/(Tn[i] * tnmediana);
+	return ret;
+}
+
+double* T(int *n, int s)
+{
+	double *ret = new double [s];
+	for(int i=0; i<s; ++i)
+		ret[i] = pow((double)n[i], 2.0)/6.0 + (double)5*(n[i])/6;
+	return ret;
+}
+
+void printTable(std::pair< double*, int* > data, double *aq, int s, std::ostream &f)
+{
+	f << "N: \t t(n): \t q(n): \n";
+	for(int i=0; i<s; ++i)
+	{
+		f << data.second[i] << "\t" << data.first[i] << "\t" << aq[i] << "\n" ;
+	}
+}
