@@ -63,7 +63,12 @@ public:
 
     bool getCheckTimes() const;
 
-	/**
+    char *getWorkLogFile() const;
+
+    char *getTableFile() const;
+
+
+    /**
 	 * -------------------------------------------------------------------------------------
 	 *  PROTECTED GETTERS AND SETTERS
 	 *  ------------------------------------------------------------------------------------
@@ -100,7 +105,9 @@ protected:
 
     char* getstring(ifstream *f, const char* def);
 
+    void setTableFile(char *_TableFile);
 
+    void setWorkLogFile(char *_WorkLogFile);
 
 private:
 
@@ -169,9 +176,19 @@ private:
 	bool _GenTable;
 
 	/**
+	 * nazwa pliku do ktorego generowana bedzie tabelka
+	 */
+	char *_TableFile;
+
+	/**
 	 * Mówi czy pokazywać przebiegi sortowania.
 	 */
 	bool _ShowWork;
+
+	/**
+	 * nazwa pliku w ktorym pokazana jest praca
+	 */
+	char *_WorkLogFile;
 
 	/**
 	 * Mówi czy mierzyć czasy.

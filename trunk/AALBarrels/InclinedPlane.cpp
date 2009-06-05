@@ -33,6 +33,7 @@ InclinedPlane::InclinedPlane()
 	this->quantityOfBlue = 0;
 	this->quantityOfGreen = 0;
 	this->quantityOfRed = 0;
+	this->log = NULL;
 }
 
 /**
