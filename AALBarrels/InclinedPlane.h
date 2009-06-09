@@ -96,7 +96,7 @@ public:
 	 * Z podanego strumienia czytana jest linijka i na jej podstawie
 	 * tworzona jest tablica wskaznikow na beczki.
 	 */
-	static Barrel** readLineOfBarrels(ifstream *f);
+	static pair<Barrel**, int> readLineOfBarrels(ifstream *f);
 
 	/**
 	 * Z podanej tablicy charow tworzy tablice wskaznikow na beczki.
@@ -118,6 +118,11 @@ public:
 	 * funkcja zatrzymuje strumien logowania
 	 */
 	void stopLogs();
+
+	/**
+	 * funkcja zwraca rozmiar problemu
+	 */
+	int size() const;
 
 private:
 
