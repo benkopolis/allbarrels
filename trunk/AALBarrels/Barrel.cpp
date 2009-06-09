@@ -96,6 +96,16 @@ Barrel* Barrel::readBarrel(char s)
 		break;
 	case 'G':
 		c = Barrel::GREEN;
+		break;
+	case 'r':
+		c = Barrel::RED;
+		break;
+	case 'b':
+		c = Barrel::BLUE;
+		break;
+	case 'g':
+		c = Barrel::GREEN;
+		break;
 	default:
 		break;
 	}

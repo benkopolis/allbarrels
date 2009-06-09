@@ -73,7 +73,8 @@ Barrel* InclinedPlane::addBarrel(Barrel *b)
 			break;
 		default:
 			BarrelException c(BarrelException::NoColorSet);
-			std::string s("Threw from void InclinedPlane::addBarrel(Barrel *b)");
+			std::string s("Threw from void InclinedPlane::addBarrel(Barrel *b)\n");
+			b->printBarrel();
 			c.setMessage(s);
 			throw c;
 			break;
@@ -213,10 +214,10 @@ Barrel** InclinedPlane::generateBarrels(int size)
 	return r;
 }
 
-Barrel** InclinedPlane::readLineOfBarrels(std::ifstream *f)
+pair<Barrel**, int> InclinedPlane::readLineOfBarrels(std::ifstream *f)
 {
 	char c;
-	int i = 0;
+	int i = 0, s = 0;
 	Barrel **ret;
 	char *tab=NULL;
 	const char *cp=NULL;
@@ -229,11 +230,15 @@ Barrel** InclinedPlane::readLineOfBarrels(std::ifstream *f)
 	c = tab[0];
 	while(c != '\0' && c != '\n')
 	{
-		ret[i] = Barrel::readBarrel(c);
+		if(c == 'R' || c == 'B' || c == 'G' || c == 'r' || c == 'b' || c == 'g')
+		{
+			ret[i] = Barrel::readBarrel(c);
+			++s;
+		}
 		++i;
 		c = tab[i];
 	}
-	return ret;
+	return make_pair(ret, s);
 }
 
 Barrel** InclinedPlane::convertStringToBarrels(const char *str)
@@ -277,6 +282,10 @@ void InclinedPlane::stopLogs()
 	this->log = NULL;
 }
 
+int InclinedPlane::size() const
+{
+	return this->list.size();
+}
 
 /* ----------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------- */
